@@ -1,6 +1,7 @@
 clear all, close all
 f = @(x) (1-x(2)).^2 + 100*(x(1)-x(2).^2).^2;
-grad = @(x) [200*(x(1)-x(2).^2), 2*x(2)-2-400*(x(1)-x(2).^2).*x(2)];
+%grad = @(x) [200*(x(1)-x(2).^2), 2*x(2)-2-400*(x(1)-x(2).^2).*x(2)];
+grad = @(x) gradiente(f,x)';
 %f = @(x) (x(1)-x(2)).^4+2*x(1).^2+x(2).^2-x(1)+2*x(2);
 %grad = @(x) [4*(x(1)-x(2)).^3+4*x(1)-1 , -4*(x(1)-x(2)).^3+2*x(2)+2];
 x = [-0.8,-1];
@@ -17,7 +18,7 @@ shading('INTERP')
 
 hold on
 
-while norm(grad(x)) > 0.001 && n < 1000
+while norm(grad(x)) > 0.001 && n < 10000
     d = -grad(x);
     phi = @(t) f(x + t*d);
     t = fminsearch(phi,0);
