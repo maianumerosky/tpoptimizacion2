@@ -1,8 +1,44 @@
-clear all, close all
+function x = metodogradiente(f,x,varargin)
+[a,b] = ismember('MaxNumIter',varargin)
+if a == 1
+  MaxNumIter = str2num(varargin{b+1});
+else
+  MaxNumIter = 1000;
+end
+
+[a,b] = ismember('tolGrad',varargin)
+if a == 1
+  tolGrad = str2num(varargin{b+1});
+else
+  tolGrad = 10^(-4);
+end
+
+[a,b] = ismember('tolIter',varargin)
+if a == 1
+  tolIter = str2num(varargin{b+1});
+else
+  tolIter = 10^(-4);
+end
+
+[a,b] = ismember('Grad',varargin)
+if a == 1
+  Grad = eval(varargin{b+1});
+else
+  Grad = 1000;
+end
+
+[a,b] = ismember('Hess',varargin)
+if a == 1
+  Hess = eval(varargin{b+1});
+else
+  Hess = 1000;
+end
+
 f = @(x) (1-x(2)).^2 + 100*(x(1)-x(2).^2).^2;
 %grad = @(x) [200*(x(1)-x(2).^2), 2*x(2)-2-400*(x(1)-x(2).^2).*x(2)];
 grad = @(x) gradiente(f,x);
 %f = @(x) (x(1)-x(2)).^4+2*x(1).^2+x(2).^2-x(1)+2*x(2);
+
 %grad = @(x) [4*(x(1)-x(2)).^3+4*x(1)-1 , -4*(x(1)-x(2)).^3+2*x(2)+2];
 x = [0;0];
 puntox = x(1);
@@ -21,7 +57,15 @@ hold on
 while norm(grad(x)) > 0.001 && n < 1000
     d = -grad(x)';
     phi = @(t) f(x + t*d);
-    t = fminbnd(phi,0,10);
+    if Opn == 1
+      t = fminsearch(phi,0);
+    elseif Opn == 2
+      t = fminbnd(phi,0,10);
+    elseif Opn == 3
+      t = triseccion(f,0,10);
+    elseif Opn == 4;
+      t = armijo(phi,x);
+    end
     x = x + t * d;
     %puntox = [puntox x(1)];
     %puntoy = [puntoy x(2)];
