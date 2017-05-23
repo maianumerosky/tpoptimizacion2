@@ -1,37 +1,59 @@
 function x = metodogradiente(f,x,varargin)
-[a,b] = ismember('MaxNumIter',varargin)
+
+[a,b] = ismember('Paso',varargin);
+if a == 1
+  Paso = str2num(varargin{b+1});
+else
+  Paso = 1;
+end
+
+[a,b] = ismember('MaxNumIter',varargin);
 if a == 1
   MaxNumIter = str2num(varargin{b+1});
 else
   MaxNumIter = 1000;
 end
 
-[a,b] = ismember('tolGrad',varargin)
+[a,b] = ismember('tolGrad',varargin);
 if a == 1
   tolGrad = str2num(varargin{b+1});
 else
   tolGrad = 10^(-4);
 end
 
-[a,b] = ismember('tolIter',varargin)
+[a,b] = ismember('tolIter',varargin);
 if a == 1
   tolIter = str2num(varargin{b+1});
 else
   tolIter = 10^(-4);
 end
 
-[a,b] = ismember('Grad',varargin)
+[a,b] = ismember('Grad',varargin);
 if a == 1
   Grad = eval(varargin{b+1});
 else
-  Grad = 1000;
+  Grad = gradiente(f,x);
 end
 
-[a,b] = ismember('Hess',varargin)
+[a,b] = ismember('Hess',varargin);
 if a == 1
   Hess = eval(varargin{b+1});
 else
-  Hess = 1000;
+  Hess = hessiano(f,x);
+end
+
+[a,b] = ismember('alpha0',varargin);
+if a == 1
+  alpha0 = str2num(varargin{b+1});
+else
+  alpha0 = 10;
+end
+
+[a,b] = ismember('nu',varargin);
+if a == 1
+  nu = str2num(varargin{b+1});
+else
+  nu = 10;
 end
 
 f = @(x) (1-x(2)).^2 + 100*(x(1)-x(2).^2).^2;
@@ -57,14 +79,14 @@ hold on
 while norm(grad(x)) > 0.001 && n < 1000
     d = -grad(x)';
     phi = @(t) f(x + t*d);
-    if Opn == 1
+    if Paso == 1
       t = fminsearch(phi,0);
-    elseif Opn == 2
-      t = fminbnd(phi,0,10);
-    elseif Opn == 3
-      t = triseccion(f,0,10);
-    elseif Opn == 4;
-      t = armijo(phi,x);
+    elseif Paso == 2
+      t = fminbnd(phi,0,alpha0);
+    elseif Paso == 3
+      t = triseccion(f,0,alpha0);
+    elseif Paso == 4;
+      t = armijo(phi,x,nu);
     end
     x = x + t * d;
     %puntox = [puntox x(1)];

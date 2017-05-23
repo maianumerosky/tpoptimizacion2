@@ -1,8 +1,7 @@
-function t = armijo(f,x)
+function t = armijo(f,x,nu)
 
 d = -grad(x)';
 t = 1;
-nu = 10;
 
 while f(x + t*dk') > f(x) + t*0.2*grad(x)*d
   t = t/nu;
