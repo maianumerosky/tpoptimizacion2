@@ -1,9 +1,9 @@
-function y = gradienteconj(f,x,varargin)
+function y = gradienteConj(f,x,varargin)
 
 Cuad = opcion('Cuad',varargin,0);
 
+%% Metodo Gradiente Cuadraticas
 if Cuad
-    %% Metodo Gradiente Cuadraticas
     ind = strmatch('Cuad',varargin);
     Q = eval(varargin{ind+2});
     b = eval(varargin{ind+3});
