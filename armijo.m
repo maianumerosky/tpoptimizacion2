@@ -1,12 +1,12 @@
-function t = armijo(f,x,eta)
+function t = armijo(f,x,eta,grad)
 
-d = (-1)*Grad(x)';
+d = (-1)*grad(x)';
 t = 1;
 
-while f(x + t*d) > f(x) + t*0.2*Grad(x)*d
+while f(t) > f(0) + t*0.2*grad(x)*d
   t = t/eta;
 end
 
-while f(x + eta*t*d) <= f(x) + eta*t*0.2*Grad(x)*d
+while f(eta*t) <= f(0) + eta*t*0.2*grad(x)*d
     t = eta * t;
 end

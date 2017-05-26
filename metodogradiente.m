@@ -21,6 +21,7 @@ function y = metodogradiente(f,x,varargin)
     eta = opcion('eta',varargin,10);
 
     n = 1;
+    tic
     while norm(Grad(x)) > tolGrad && n < MaxNumIter
         d = -Grad(x)';
         phi = @(t) f(x + t*d);
@@ -29,12 +30,12 @@ function y = metodogradiente(f,x,varargin)
         elseif Paso == 2
           t = fminbnd(phi,0,alpha0);
         elseif Paso == 3
-          t = triseccion(f,0,alpha0);
+          t = triseccion(phi,0,alpha0);
         elseif Paso == 4;
-          t = armijo(phi,x,eta);
+          t = armijo(phi,x,eta,Grad);
         end
         x = x + t * d;
         n = n+1;
     end
-    
+    toc
     y = x;
