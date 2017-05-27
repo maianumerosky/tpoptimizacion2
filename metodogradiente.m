@@ -1,14 +1,18 @@
-function y = metodogradiente(f,x,varargin)
+function [y varargout] = metodogradiente(f,x,varargin)
 % Configuracion de opciones: El usuario debera ingresar todas las opciones
 % y sus valores en formato string. Siempre primero el nombre de la opcion y
 % luego separado por una coma su valor. Es importante respetar mayusuculas
-% y mietasculas. No es importante el orden de las opciones.
+% y minusculas. No es importante el orden de las opciones.
 % Ejemplo: Para ingresar una cantidad maxima de 50 iteraciones y el gradiente
 % analitico. 
 % f = x(1)^2 + x(2)^2
 % y = metodogradiente(f,x,'Grad','@(x) [2x(1),2x(2)]','tolIter','50')
 % Esto tambien es equivalente a:
 % y = metodogradiente(f,x,'tolIter','50','Grad','@(x) [2x(1),2x(2)]')
+
+%Lo referido a varargout es para obtener datos auxiliares para el tp, esto
+%son los tiempos que demora el metodo, la cantidad de iteraciones, y los
+%puntos intermedios que fue recorriendo hasta que finalizo.
 
 % El usuario observando la lista siguiente, ya parte del codigo se dara
 % cuenta de que opciones son modificables.
@@ -21,6 +25,7 @@ function y = metodogradiente(f,x,varargin)
     eta = opcion('eta',varargin,10);
 
     n = 1;
+    intermedios = [x];
     tic
     while norm(Grad(x)) > tolGrad && n <= MaxNumIter
         d = -Grad(x)';
@@ -35,8 +40,10 @@ function y = metodogradiente(f,x,varargin)
           t = armijo(phi,x,eta,Grad);
         end
         x = x + t * d;
+        intermedios = [intermedios x];
         n = n+1;
     end
-    toc
-    n
+    varargout{1} = toc;
+    varargout{2} = n-1;
+    varargout{3} = intermedios;
     y = x;

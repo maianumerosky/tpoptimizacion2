@@ -1,8 +1,8 @@
-function y = metodogradiente(f,x,varargin)
+function [y varargout] = metodogradiente(f,x,varargin)
 % Configuracion de opciones: El usuario debera ingresar todas las opciones
 % y sus valores en formato string. Siempre primero el nombre de la opcion y
 % luego separado por una coma su valor. Es importante respetar mayusuculas
-% y mietasculas. No es importante el orden de las opciones.
+% y minusculas. No es importante el orden de las opciones.
 % Ejemplo: Para ingresar una cantidad maxima de 50 iteraciones y el gradiente
 % analitico. 
 % f = x(1)^2 + x(2)^2
@@ -21,7 +21,9 @@ function y = metodogradiente(f,x,varargin)
     eta = opcion('eta',varargin,10);
 
     n = 1;
-    while norm(Grad(x)) > tolGrad && n < MaxNumIter
+    intermedios = [x];
+    tic
+    while norm(Grad(x)) > tolGrad && n <= MaxNumIter
         d = -Grad(x)';
         phi = @(t) f(x + t*d);
         if Paso == 1
@@ -29,12 +31,15 @@ function y = metodogradiente(f,x,varargin)
         elseif Paso == 2
           t = fminbnd(phi,0,alpha0);
         elseif Paso == 3
-          t = triseccion(f,0,alpha0);
+          t = triseccion(phi,0,alpha0);
         elseif Paso == 4;
-          t = armijo(phi,x,eta);
+          t = armijo(phi,x,eta,Grad);
         end
         x = x + t * d;
+        intermedios = [intermedios x];
         n = n+1;
     end
-    
+    varargout{1} = toc;
+    varargout{2} = n-1;
+    varargout{3} = intermedios;
     y = x;

@@ -1,5 +1,6 @@
-function y = gradienteconj(f,x,varargin)
+function [y varargout] = gradienteconj(f,x,varargin)
     Cuad = opcion('Cuad',varargin,0);
+    intermedios = [x];
     
     if Cuad == 1
         %% Metodo Gradiente Cuadraticas
@@ -19,9 +20,10 @@ function y = gradienteconj(f,x,varargin)
                 g = Q*x-b;
                 beta = (g'*Q*d)/(d'*Q*d);
                 d = -g+beta*d;
+                intermedios = [intermedios x];
             end
         end
-        toc
+        varargout{1} = toc;
     
     %% Metodo Gradiente General
     else
@@ -43,10 +45,12 @@ function y = gradienteconj(f,x,varargin)
                     g = (Grad(x))';
                     beta = (g'*hess*d)/(d'*hess*d);
                     d = -g+beta*d;
+                    intermedios = [intermedios x];
                 end
             end
         end
-        toc
+        varargout{1} = toc;
     end
     
+    varargout{2} = intermedios;
     y = x;

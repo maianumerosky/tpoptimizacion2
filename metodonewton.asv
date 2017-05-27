@@ -1,4 +1,4 @@
-function y = metodonewton(f,x, varargin)
+function [y varargout] = metodonewton(f,x, varargin)
 
     MaxNumIter = opcion('MaxNumIter',varargin,1000);
     Grad = opcion('Grad',varargin,@(x) gradiente(f,x));
@@ -7,6 +7,9 @@ function y = metodonewton(f,x, varargin)
 
     n = 1;
     H = Hess(x);
+    
+    intermedios = [x];
+    
     tic
     while norm(Grad(x)) > tolGrad && n <= MaxNumIter
         try 
@@ -14,9 +17,9 @@ function y = metodonewton(f,x, varargin)
             U = L\(-Grad(x)');
             d = L'\U;
             phi = @(t) f(x + t*d);
-            %t = armijo(phi,x,10,Grad)
             t = fminsearch(phi,0);
             x = x + t*d;
+            intermedios = [intermedios x];
             n = n + 1;
             H = Hess(x);
         catch
@@ -24,6 +27,7 @@ function y = metodonewton(f,x, varargin)
         end
     end
     toc
+    n
 
     y = x;
 
