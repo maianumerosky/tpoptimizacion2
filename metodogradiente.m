@@ -19,6 +19,7 @@ function [y varargout] = metodogradiente(f,x,varargin)
 
     Paso = opcion('Paso',varargin,1);
     MaxNumIter = opcion('MaxNumIter',varargin,1000);
+    tolIter = opcion('tolIter',varargin,10^(-4));
     tolGrad = opcion('tolGrad',varargin,10^(-4));
     Grad = opcion('Grad',varargin,@(x) gradiente(f,x));
     alpha0 = opcion('alpha0',varargin,10);
@@ -26,8 +27,10 @@ function [y varargout] = metodogradiente(f,x,varargin)
 
     n = 1;
     intermedios = [x];
+    e = inf;
+    
     tic
-    while norm(Grad(x)) > tolGrad && n <= MaxNumIter
+    while norm(Grad(x)) > tolGrad && n <= MaxNumIter && e>tolIter
         d = -Grad(x)';
         phi = @(t) f(x + t*d);
         if Paso == 1
@@ -39,6 +42,7 @@ function [y varargout] = metodogradiente(f,x,varargin)
         elseif Paso == 4;
           t = armijo(phi,x,eta,Grad);
         end
+        e = norm(t*d); %Pues el error es ||x - (x+t*d)||
         x = x + t * d;
         intermedios = [intermedios x];
         n = n+1;

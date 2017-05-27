@@ -24,16 +24,21 @@ function [y varargout] = gradienteconj(f,x,varargin)
             end
         end
         varargout{1} = toc;
+        varargout{2} = intermedios;
     
     %% Metodo Gradiente General
     else
         n = length(x);
         MaxNumIter = opcion('MaxNumIter',varargin,100);
+        tolIter = opcion('tolIter',varargin,10^(-4));
+        tolGrad = opcion('tolGrad',varargin,10^(-4));
         Grad = opcion('Grad',varargin,@(x) gradiente(f,x));
         Hess = opcion('Hess',varargin,@(x) hessiano(f,x));
-                
+        
+        e = inf;
+        i = 1;
         tic
-        for i=1:MaxNumIter
+        while norm(Grad(x))>tolGrad && i<=MaxNumIter && e>tolIter
             if Grad(x) ~= 0
                 g = (Grad(x))'; 
                 d = -g;
@@ -41,6 +46,7 @@ function [y varargout] = gradienteconj(f,x,varargin)
                 for i=0:n-2
                     hess = Hess(x); 
                     alpha = (-g'*d)/(d'*hess*d);
+                    e = norm(alpha*d);
                     x = x + alpha*d;
                     g = (Grad(x))';
                     beta = (g'*hess*d)/(d'*hess*d);
@@ -48,9 +54,11 @@ function [y varargout] = gradienteconj(f,x,varargin)
                     intermedios = [intermedios x];
                 end
             end
+            i = i + 1;
         end
         varargout{1} = toc;
+        varargout{2} = i;
+        varargout{3} = intermedios;
     end
     
-    varargout{2} = intermedios;
     y = x;
