@@ -1,5 +1,6 @@
-function [x,y] = triseccion(f,a,b)
-    if abs(b-a)>0.001
+function [x,y] = triseccion(f,a,b,varargin)
+alpha = opcion('alpha',varargin,0.001);
+    if abs(b-a)>alpha
         x1 = a+((b-a)/3);
         x2 = a+(2*(b-a)/3);
         if f(x1) < f(x2)

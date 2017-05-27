@@ -22,7 +22,7 @@ function y = metodogradiente(f,x,varargin)
 
     n = 1;
     tic
-    while norm(Grad(x)) > tolGrad && n < MaxNumIter
+    while norm(Grad(x)) > tolGrad && n <= MaxNumIter
         d = -Grad(x)';
         phi = @(t) f(x + t*d);
         if Paso == 1
@@ -38,4 +38,5 @@ function y = metodogradiente(f,x,varargin)
         n = n+1;
     end
     toc
+    n
     y = x;
