@@ -1,7 +1,0 @@
--método gradiente (con fminsearch  y con fminbnd con un parámetro alpha moño > alpha > 0)
--método de orden 0 (triseccion)
--método gradiente conjugado
--armijo/goldstein/wolfe
--método a elección
-
-
