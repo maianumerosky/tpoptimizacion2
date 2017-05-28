@@ -252,3 +252,49 @@ Prueba 19: Metodo de Newton con Búsqueda Lineal
 
     Observaciones:
     Similares a Prueba 18
+
+Funcion Rosenbruck
+X_inicial = [-2;2]
+
+Prueba 20: 
+    Tiempos:    1.0149    0.8667    0.4680    1.6170
+    Cantidad de iteraciones:  1000    1000    1000    1000
+
+    Parametros utilizados:
+    [y t n yy] = metodogradiente(f,x,'Paso','1','tolIter','-1');
+    [y_ t_ n_ yy_] = metodogradiente(f,x,'Paso','2','alpha0','.05','tolIter','-1');
+    [y__ t__ n__ yy__] = metodogradiente(f,x,'Paso','3','alpha','.001','alpha0','0.01','tolIter','-1');
+    [y___ t___ n___ yy___] = metodogradiente(f,x,'Paso','4','eta','10','tolIter','-1');
+
+    Observaciones:
+    En la figura se ve como se acercan al minimo global, pero es tan lenta la convergencia que no llega.
+    En fminsearch se nota el efecto serrucho.
+
+Prueba 21:
+    Tiempos:    1.0149    0.8667    0.4680    1.6170
+    Cantidad de iteraciones:  1000    1000    1000    1000
+
+    Parametros utilizados:
+    [y t n yy] = metodogradiente(f,x,'Paso','1','tolIter','-1');
+    [y_ t_ n_ yy_] = metodogradiente(f,x,'Paso','2','tolIter','-1');
+    [y__ t__ n__ yy__] = metodogradiente(f,x,'Paso','3','tolIter','-1');
+    [y___ t___ n___ yy___] = metodogradiente(f,x,'Paso','4','tolIter','-1');
+
+    Observaciones:
+    Se muestra lo irregular y lento en términos de convergencia que puede ser el método del gradiente.
+    De hecho en 1000 iteraciones no convirgió.
+
+Prueba 22:
+Idem Prueba 20. Pero con gradiente analítico:
+    Tiempos:    6.5697    1.2086    0.9515    3.2843
+    Cantidad de iteraciones: 1000         497        1000        1000
+
+    Observaciones:
+    Con busqueda acotada converge.
+
+Prueba 23: Metodo gradiente conjungado
+    Tiempo 0.4902
+    Cantidad de iteraciones: 171
+
+    Convirgió. Se uso gradiente analítico. Si el gradiente es numérico no converge.
+
