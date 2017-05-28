@@ -23,6 +23,7 @@ function [y varargout] = metodogradiente(f,x,varargin)
     tolGrad = opcion('tolGrad',varargin,10^(-4));
     Grad = opcion('Grad',varargin,@(x) gradiente(f,x));
     alpha0 = opcion('alpha0',varargin,10);
+    alpha = opcion('alpha',varargin,0.001);
     eta = opcion('eta',varargin,10);
 
     n = 1;
@@ -38,7 +39,7 @@ function [y varargout] = metodogradiente(f,x,varargin)
         elseif Paso == 2
           t = fminbnd(phi,0,alpha0);
         elseif Paso == 3
-          t = triseccion(phi,0,alpha0);
+          t = triseccion(phi,0,alpha0,alpha);
         elseif Paso == 4;
           t = armijo(phi,x,eta,Grad);
         end
