@@ -79,3 +79,176 @@ Algunas Observaciones hasta el momento de Newton con BL:
 En general en todos los casos vistos hasta el momento, el mínimo local encontrado suele ser el más cercano. Habría que ver si modificando el método de la búsqueda lineal esto se modifica.
 Siempre converge a mínimo.
 
+
+Funcion: Griewank
+X_inicial = [60;60]
+Prueba 8: Metodo gradiente
+    Tiempos: 1.1146    1.5415    1.1996    0.0176
+    Cantidad de iteraciones: 5        1000        1000           7
+
+    Parametros utilizados:
+    [y t n yy] = metodogradiente(f,x,'Paso','1');
+    [y_ t_ n_ yy_] = metodogradiente(f,x,'Paso','2','alpha0','.05');
+    [y__ t__ n__ yy__] = metodogradiente(f,x,'Paso','3','alpha','.001','alpha0','0.01');
+    [y___ t___ n___ yy___] = metodogradiente(f,x,'Paso','4','eta','2');
+
+    Observaciones: 
+    Es importante ajustar los parametros de los modos de la búsqueda lineal, ya que la función está definida en conjunto compacto. Y en las iteraciones puede ocurrir que algún elemento caiga por fuera del dominio.
+    Influye que esta funcion se "plancha" mucho cerca del mínimo, por lo que los métodos que convergieron pueden hacerlo lejos del minimo.
+    Notar que si en los casos de busqueda en un segmente acotado es muy chico, se requieren muchas iteraciones para converger. En este grafico hay metodos que no convirgieron.
+    
+Prueba 9: Metodo gradiente
+
+    Tiempos: 0.0209    0.0294    0.0639    0.0116
+    Cantidad de iteraciones: 5    23    23     7
+
+    Parametros utilizados: 
+    [y t n yy] = metodogradiente(f,x,'Paso','1');
+    [y_ t_ n_ yy_] = metodogradiente(f,x,'Paso','2');
+    [y__ t__ n__ yy__] = metodogradiente(f,x,'Paso','3');
+    [y___ t___ n___ yy___] = metodogradiente(f,x,'Paso','4','eta','2');
+
+    Observaciones:
+    En este caso todos convirgieron en pocas iteraciones, sin embargo algunos no llegaron al mínimo. Esto se debe al criterio de parada.
+
+Prueba 10: Metodo gradiente
+
+    Tiempos:  0.1384    0.0810    0.0785    0.0227
+    Cantidad de iteraciones:   9    29    29    10
+    
+    Parametros utilizados: 
+    [y t n yy] = metodogradiente(f,x,'Paso','1','tolGrad','0','tolIter','10^(-6)');
+    [y_ t_ n_ yy_] = metodogradiente(f,x,'Paso','2','tolGrad','0','tolIter','10^(-6)');
+    [y__ t__ n__ yy__] = metodogradiente(f,x,'Paso','3','tolGrad','0','tolIter','10^(-6)');
+    [y___ t___ n___ yy___] = metodogradiente(f,x,'Paso','4','eta','2','tolGrad','0','tolIter','10^(-6)');
+
+    Observaciones:
+    Respecto a prueba 9 no hubo diferencias cualitativas. En este caso se decidió ignorar el criterio de parada del gradiente, y restringir aún más el criterio de parada cuando dos términos de la sucesión son considerados iguales. Sin embargo como se ve en el gráfico, no se produjeron cambios significativos.
+
+Prueba 11: Metodo gradiente
+
+    Tiempos: 0.0984    0.0630    0.0336    0.0244
+    Cantidad de iteraciones:  5     8     8    18
+
+    Parametros utilizados:
+    [y t n yy] = metodogradiente(f,x,'Paso','1');
+    [y_ t_ n_ yy_] = metodogradiente(f,x,'Paso','2','alpha0','50');
+    [y__ t__ n__ yy__] = metodogradiente(f,x,'Paso','3','alpha0','50');
+    [y___ t___ n___ yy___] = metodogradiente(f,x,'Paso','4','eta','10');
+
+    Observaciones:
+    Conociendo un poco la geometría de la función se pueden configurar mejor los métodos de búsqueda en un segmente acotado. En este caso sabiendo que el origen es un mínimo, y que las coordenadas del punto inicial son [60;60]. Se dijo que el segmento de búsqueda sea de longitud 60. Y así esos métodos se acercaron más al origen.
+    Con armijo es más inestable la elección del eta. Pueden pasar varias cosas distintas. Pero siempre termina convirgiendo.
+
+Prueba 12: Gradiente Conjugado
+
+    El X_inicial genera una iteración por fuera del dominio.
+    X_inicial 2 = [70;40]
+
+    Tiempos: 1.9118
+    Cantidad de iteraciones: 1001
+
+    Parametros utilizados:
+    [y t n yy] = gradienteconj(f,x);
+
+    Observaciones: 
+    No convirgió. Se puede deber tal vez a las irregularidades de la función, y que los gradientes no tienen grandes valores en módulo. Lo que estancaría a la sucesión.
+    Se probó de poner de máximo 100000 iteraciones, y llegó al mismo lugar. La sucesión de término pareciera oscilar.
+
+Prueba 13: Metodo de Newton con Búsqueda Lineal
+
+    X_inicial = [60;60]
+    Tiempo: 0.5398
+    Cantidad de iteraciones: 4
+
+    Parametros utilizados:
+    [y t n yy] = metodonewton(f,x);
+
+    Observaciones:
+    Similar a lo que sucede con Prueba 8, y "fminsearch" (Paso 1)
+    Se probó el mismo método, pero con punto inicial [40;70]. Resultado similar, pero convergencia más rápida en tiempo: 0.1097. Pero más lejos del mínimo.
+
+Funcion: Himmelblau
+    X_inicial = [0;0]
+    
+Prueba 14: Metodo gradiente
+
+    Tiempos:   0.1020    0.0536    0.0459    0.0424
+    Cantidad de iteraciones:  10     7    35    29
+
+    Parametros utilizados:
+    [y t n yy] = metodogradiente(f,x,'Paso','1');
+    [y_ t_ n_ yy_] = metodogradiente(f,x,'Paso','2','alpha0','.05');
+    [y__ t__ n__ yy__] = metodogradiente(f,x,'Paso','3','alpha','.001','alpha0','0.01');
+    [y___ t___ n___ yy___] = metodogradiente(f,x,'Paso','4','eta','10');
+
+    Observaciones: 
+    Todos convergieron al mismo mínimo global. 
+    Se necesito ajustar los parámetros de los segmentos acotados según el dominio de la función. Para no generar puntos que salgan del dominio de la misma en las iteraciones.
+    A pesar de la cantidad de iteraciones, trisección y armijo fueron más rápidos que los otros dos métodos.
+
+Prueba 15: Metodo Gradiente
+    
+    X_inicial = [4.5;4.5]
+    Tiempos:   0.1225    0.0654    0.0404    0.0452
+    Cantidad de iteraciones:  11    11    28    28
+
+    Parametros utilizados:
+    [y t n yy] = metodogradiente(f,x,'Paso','1');
+    [y_ t_ n_ yy_] = metodogradiente(f,x,'Paso','2','alpha0','.05');
+    [y__ t__ n__ yy__] = metodogradiente(f,x,'Paso','3','alpha','.001','alpha0','0.01');
+    [y___ t___ n___ yy___] = metodogradiente(f,x,'Paso','4','eta','10');
+
+    Observaciones: 
+    Todos convergieron al mismo mínimo global. 
+    Se observa la rapidez de armijo y triseccion, por sobre la busquda exacta.
+
+Prueba 16: Gradiente conjudado
+
+    X_inicial = [0;0]
+    Tiempo: 0.0426
+    Cantidad de iteraciones: 13
+
+    Parametros utilizados:
+    [y t n yy] = gradienteconj(f,x);
+
+    Observaciones:
+    No convirgió al mínimo, se estancó antes. Es rápido tanto en iteraciones como en tiempo.
+
+Prueba 17: Gradiente conjugado
+
+    X_inicial = [4.5;4.5]
+    Tiempo: 0.0434
+    Cantidad de iteraciones: 13
+
+    Parametros utilizados:    
+    [y t n yy] = gradienteconj(f,x);
+
+    Observaciones:
+    Convirgió a uno de los mínimos globales. Es rápido
+    
+Con gradiente conjugado es facil que salga del dominio la funcion. Es dificil de controlar.
+
+Prueba 18: Metodo de Newton con Búsqueda Lineal
+
+    X_inicial = [0;0]
+    Tiempo: 0.1165
+    Cantidad de iteraciones: 6
+
+    Parametros utilizados:
+    [y t n yy] = metodonewton(f,x);
+
+    Observaciones:
+    Convirgió a uno de los mínimos globales en pocas iteraciones. Pero cada iteración tarda. Habría que ver que pasa modificando el método de búsqueda lineal que sucede.
+
+Prueba 19: Metodo de Newton con Búsqueda Lineal
+
+    X_inicial = [4.5;4.5]
+    Tiempo: 0.0946
+    Cantidad de iteraciones: 4
+
+    Parametros utilizados:
+    [y t n yy] = metodonewton(f,x);
+
+    Observaciones:
+    Similares a Prueba 18

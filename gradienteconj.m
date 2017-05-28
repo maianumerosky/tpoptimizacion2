@@ -29,7 +29,7 @@ function [y varargout] = gradienteconj(f,x,varargin)
     %% Metodo Gradiente General
     else
         n = length(x);
-        MaxNumIter = opcion('MaxNumIter',varargin,100);
+        MaxNumIter = opcion('MaxNumIter',varargin,1000);
         tolIter = opcion('tolIter',varargin,10^(-4));
         tolGrad = opcion('tolGrad',varargin,10^(-4));
         Grad = opcion('Grad',varargin,@(x) gradiente(f,x));
