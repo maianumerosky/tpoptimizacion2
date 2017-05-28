@@ -1,0 +1,81 @@
+Datos
+
+Funcion: Rastrigin
+X_inicial = [-2.5;3]
+Prueba 1: Metodo gradiente
+
+    Tiempos: 0.0111    0.2750    0.0092    0.0251
+    Cantidad de iteraciones: 5   258     8    11
+
+    Parametros utilizados:
+    [y t n yy] = metodogradiente(f,x,'Paso','1');
+    [y_ t_ n_ yy_] = metodogradiente(f,x,'Paso','2','alpha0','.05');
+    [y__ t__ n__ yy__] = metodogradiente(f,x,'Paso','3','alpha','.001','alpha0','0.01');
+    [y___ t___ n___ yy___] = metodogradiente(f,x,'Paso','4','eta','2');
+
+    Observaciones: 
+    Es importante ajustar los parametros de los modos de la búsqueda lineal, ya que la función está definida en conjunto compacto. Y en las iteraciones puede ocurrir que algún elemento caiga por fuera del dominio.
+    Influye que esta funcion tiene numerosas alternancia de minimos y maximos con gradientes de norma grande, lo que facilita en la cuenta de x + t*d que el elemento salga fuera del dominio.
+    Notar que según los parámetros y el método se puede converger a distintos mínimos. En algunos casos incluso las iteraciones pueden saltar de mínimo a mínimo. Como realizo el fminbnd. Ver gráfico
+    Notar que siempre convergen a mínimo.
+    Con Armijo se llegó al mínimo global.
+
+Prueba 2: Gradiente Conjugado
+    El X_inicial genera una iteración por fuera del dominio.
+    X_inicial 2 = [-2.5;3.5]
+    Tiempo: 0.0247
+    Cantidad de iteraciones: 1
+    [y t n yy] = gradienteconj(f,x);
+
+    Observaciones:
+    Llegó a un máximo local
+
+Prueba 3: Gradiente Conjugado
+    X_inicial = [-2.5;2]
+    Tiempo: 0.0256
+    Cantidad de iteraciones: 7
+    [y t n yy] = gradienteconj(f,x);
+
+    Observaciones:
+    Llegó a un máximo local
+
+Prueba 4: Gradiente Conjugado
+    X_inicial = [-1.5;0]
+    Tiempo: 0.0293
+    Cantidad de iteraciones: 4
+    [y t n yy] = gradienteconj(f,x);
+
+    Observaciones:
+    Llegó a un punto silla
+
+Prueba 5: Metodo de Newton con Búsqueda Lineal
+    X_inicial = [-2.5;3]
+    Tiempo: 0.1856
+    Cantidad de Iteraciones: 3
+    [y t n yy] = metodonewton(f,x);
+
+    Observaciones:
+    Llegó a un mínimo local
+
+Prueba 6: Metodo de Newton con Búsqueda Lineal
+    X_inicial = [-2.5;3.5]
+    Tiempo: 0.1886
+    Cantidad de Iteraciones: 4
+    [y t n yy] = metodonewton(f,x);
+
+    Observaciones:
+    Llegó a un mínimo local. Notar que arrancó muy cerca de un máximo local.
+
+Prueba 7: Metodo de Newton con Búsqueda Lineal
+    X_inicial = [-2.5;2]
+    Tiempo: 0.1802
+    Cantidad de Iteraciones: 3
+    [y t n yy] = metodonewton(f,x);
+
+    Observaciones:
+    Llegó a un mínimo local.
+
+Algunas Observaciones hasta el momento de Newton con BL:
+En general en todos los casos vistos hasta el momento, el mínimo local encontrado suele ser el más cercano. Habría que ver si modificando el método de la búsqueda lineal esto se modifica.
+Siempre converge a mínimo.
+
