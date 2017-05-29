@@ -309,3 +309,12 @@ Prueba 24 y 25: Funcion rastrigin, gradiente conjugado, gradiente analitico
     X_incial = [-2.5;2]
     Tiempo 0.0704
     Cantidad de iteraciones: 8
+
+Prueba 26: Newton con BL
+    X = [-2;2]
+    t = 0.0770
+    n = 3
+    
+    parametros: los predeterminados
+    Obs:
+    No se acercó al mínimo.
