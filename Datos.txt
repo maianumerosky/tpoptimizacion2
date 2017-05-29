@@ -298,3 +298,14 @@ Prueba 23: Metodo gradiente conjungado
 
     Convirgió. Se uso gradiente analítico. Si el gradiente es numérico no converge.
 
+Prueba 24 y 25: Funcion rastrigin, gradiente conjugado, gradiente analitico
+
+    Parametros utilizados: [y t n yy] = gradienteconj(f,x,'Grad','@(x) [2*x(1)+20*pi*sin(2*pi*x(1)),2*x(2)+20*pi*sin(2*pi*x(2))]');
+
+    X_inicial = [-2.5;3.5]
+    Tiempo: 0.0503
+    Cantidad de iteraciones: 3
+
+    X_incial = [-2.5;2]
+    Tiempo 0.0704
+    Cantidad de iteraciones: 8
